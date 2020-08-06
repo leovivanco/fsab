@@ -1,30 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { get } from "lodash";
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
 import Drawler from "./components/Drawler";
 import ContentsPages from "./components/ContentsPages";
-import axiosInstance from "./api/axiosInstance";
-import { API_MENU_LIST } from "./API_Routes";
+import GlobalProvider from "./context/GlobalProvider";
 
 const App = () => {
-  const [menuList, setMenuList] = useState([]);
-  useEffect(() => {
-    axiosInstance
-      .get(API_MENU_LIST)
-      .then((resp) => {
-        const respData = get(resp, "data");
-        if (respData) {
-          setMenuList([...respData]);
-        }
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
   return (
-    <>
-      <Drawler title="BASF CHALLANGE!" menuList={menuList}>
-        <ContentsPages />
-      </Drawler>
-    </>
+    <GlobalProvider>
+      <Router>
+        <Drawler title="BASF CHALLANGE!">
+          <ContentsPages />
+        </Drawler>
+      </Router>
+    </GlobalProvider>
   );
 };
 
