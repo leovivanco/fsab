@@ -15,7 +15,7 @@ import {
   IconButton,
   Box,
 } from "@material-ui/core";
-import MenuList from "./MenuList";
+import MenuList from "../MenuList";
 
 const drawerWidth = 240;
 
@@ -134,7 +134,7 @@ const Drawler = ({ children, title, menuList }) => {
           </IconButton>
         </div>
         <Divider />
-        <MenuList menuList={menuList} />
+        <MenuList />
       </Drawer>
       <main
         className={clsx(classes.content, {
