@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import { Home, InsertDriveFile, Search, Info } from "@material-ui/icons";
+import { Link } from "react-router-dom";
+import { GlobalContext } from "../../context/GlobalProvider";
 
-const MenuList = ({ menuList }) => {
+const MenuList = () => {
+  const { menuList } = useContext(GlobalContext);
+
   const returnIcon = (icon) => {
     switch (icon) {
       case "Home":
@@ -19,8 +23,8 @@ const MenuList = ({ menuList }) => {
 
   return (
     <List>
-      {menuList.map(({ title, id, icon }) => (
-        <ListItem button key={id}>
+      {menuList.map(({ title, id, icon, path }) => (
+        <ListItem button key={id} component={Link} to={path}>
           <ListItemIcon>{returnIcon(icon)}</ListItemIcon>
           <ListItemText primary={title} />
         </ListItem>
