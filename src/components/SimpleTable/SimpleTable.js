@@ -2,7 +2,6 @@ import React, { Fragment, memo } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Button,
   Paper,
   Table,
   TableBody,
@@ -12,8 +11,6 @@ import {
   TablePagination,
   TableRow,
 } from "@material-ui/core";
-import SearchInput from "../SearchInput";
-import { renameKey } from "../../utils/helpers";
 
 const columns = [
   { id: "chemicaltype", label: "Name", minWidth: 170 },
@@ -44,10 +41,7 @@ const SimpleTable = ({ dataCvs }) => {
     setPage(0);
   };
 
-  const handleClickRow = (event) => {
-    console.log(event);
-    history.push("/documents");
-  };
+  const handleClickRow = (event) => history.push("/documents");
 
   const withNormalizedKeys = (item) => {
     return Object.entries(item)

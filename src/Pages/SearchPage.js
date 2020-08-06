@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import SearchInput from "../components/SearchInput";
 import SimpleTable from "../components/SimpleTable";
-import { Grid, Box } from "@material-ui/core";
+import { Grid, Box, Typography } from "@material-ui/core";
 import { GlobalContext } from "../context/GlobalProvider";
 
 const SearchPage = () => {
@@ -9,7 +9,7 @@ const SearchPage = () => {
 
   return (
     <>
-      <h1>Welcome Search Page</h1>
+      <Typography variant="h4">Search Page</Typography>
       <Box mb={2}>
         <SearchInput setSearch={setSearch} />
       </Box>
