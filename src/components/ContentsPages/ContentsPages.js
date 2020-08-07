@@ -1,7 +1,7 @@
 import React from "react";
 import SearchPage from "../../pages/SearchPage";
 import DocumentsPage from "../../pages/DocumentsPage";
-//import AboutPage from "../../pages/AboutPage";
+import AboutPage from "../../pages/AboutPage";
 import { Switch, Route } from "react-router-dom";
 
 const ContentsPages = () => {
