@@ -11,7 +11,7 @@ const ContentsPages = () => {
         <Route exact path="/" component={SearchPage} />
         <Route path="/search" component={SearchPage} />
         <Route path="/documents" component={DocumentsPage} />
-        {/* <Route path="/about" component={AboutPage} /> */}
+        <Route path="/about" component={AboutPage} />
       </Switch>
     </>
   );
