@@ -1,12 +1,13 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
+import SubTitle from "../components/SubTitle/SubTitle";
 
 const AboutPage = () => {
   return (
     <>
-      <h1>About</h1>
+      <SubTitle value="About" />
       <Typography component={"p"} variant={"body2"}>
-        Thank you for visiting our spacecraft!
+        Leonardo Vivanco
       </Typography>
     </>
   );

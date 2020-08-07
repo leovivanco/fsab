@@ -10,24 +10,29 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  IconButton,
 } from "@material-ui/core";
-
-const columns = [
-  { id: "chemicaltype", label: "Name", minWidth: 170 },
-  { id: "documents", label: "Documents", minWidth: 100 },
-];
+import LanguageIcon from "@material-ui/icons/Language";
 
 const useStyles = makeStyles({
   root: {
     width: "100%",
+    marginTop: 10,
   },
   container: {
-    maxHeight: 440,
+    maxHeight: (props) => props,
   },
 });
 
-const SimpleTable = ({ dataCvs }) => {
-  const classes = useStyles();
+const SimpleTable = ({
+  dataCvs,
+  maxHeight,
+  clickOnRow,
+  columns,
+  details,
+  query,
+}) => {
+  const classes = useStyles(maxHeight);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   let history = useHistory();
@@ -41,7 +46,11 @@ const SimpleTable = ({ dataCvs }) => {
     setPage(0);
   };
 
-  const handleClickRow = (event) => history.push("/documents");
+  const handleClickRow = (rowName) =>
+    history.push({
+      pathname: "/documents",
+      search: `?q=${rowName}`,
+    });
 
   const withNormalizedKeys = (item) => {
     return Object.entries(item)
@@ -71,6 +80,95 @@ const SimpleTable = ({ dataCvs }) => {
     ...new Set(cleanDate.map((obj) => obj.chemicaltype)),
   ];
 
+  const renderMultiTable = () => {
+    return (
+      <TableBody>
+        {uniquieElements
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map((row, index) => {
+            return (
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={index + row}
+                onClick={() => clickOnRow && handleClickRow(row)}
+              >
+                {columns.map((column, index) => {
+                  return (
+                    <Fragment key={column.id + index + row}>
+                      <TableCell align={column.align}>
+                        {column.id === "chemicaltype"
+                          ? row
+                          : parseForDocuments(row)}
+                      </TableCell>
+                    </Fragment>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+      </TableBody>
+    );
+  };
+
+  const parseForValue = (rowId, row, index) => {
+    if (rowId === "number") {
+      return index + 1;
+    } else if (rowId === "actions") {
+      return (
+        <IconButton
+          component="a"
+          target="_blank"
+          aria-label="go to patents google"
+          href={`https://patents.google.com/patent/${row["patentno"]}`}
+          style={{ display: "block" }}
+        >
+          <LanguageIcon />
+        </IconButton>
+      );
+    }
+    return row[rowId];
+  };
+
+  const renderDetailsTable = () => {
+    return (
+      <TableBody>
+        {cleanDate
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          // .filter((row) => {
+          //   if (query) {
+          //     return (
+          //       row.chemicaltype.toLocaleLowerCase() ===
+          //       query.toLocaleLowerCase()
+          //     );
+          //   }
+          //   return row;
+          // })
+          .map((row, indexDate) => {
+            return (
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={indexDate + row}
+              >
+                {columns.map((column, index) => {
+                  return (
+                    <Fragment key={column.id + index + row}>
+                      <TableCell align={column.align}>
+                        {parseForValue(column.id, row, indexDate)}
+                      </TableCell>
+                    </Fragment>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+      </TableBody>
+    );
+  };
+
   return (
     <Paper className={classes.root}>
       {/* <SearchInput /> */}
@@ -89,33 +187,7 @@ const SimpleTable = ({ dataCvs }) => {
               ))}
             </TableRow>
           </TableHead>
-          <TableBody>
-            {uniquieElements
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((row, index) => {
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    tabIndex={-1}
-                    key={index + row}
-                    onClick={(event) => handleClickRow(event)}
-                  >
-                    {columns.map((column, index) => {
-                      return (
-                        <Fragment key={column.id + index + row}>
-                          <TableCell align="left">
-                            {column.id === "chemicaltype"
-                              ? row
-                              : parseForDocuments(row)}
-                          </TableCell>
-                        </Fragment>
-                      );
-                    })}
-                  </TableRow>
-                );
-              })}
-          </TableBody>
+          {details ? renderDetailsTable() : renderMultiTable()}
         </Table>
       </TableContainer>
       <TablePagination
