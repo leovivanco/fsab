@@ -7,7 +7,6 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import {
   Drawer,
-  CssBaseline,
   AppBar,
   Toolbar,
   Typography,
@@ -22,6 +21,15 @@ const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    "& .MuiSvgIcon-root": {
+      color: theme.palette.primary.main,
+    },
+    "& .MuiListItemText-root": {
+      color: theme.palette.primary.main,
+    },
+    "& .MuiTableCell-root": {
+      fontWeight: "bold",
+    },
   },
   appBar: {
     transition: theme.transitions.create(["margin", "width"], {
@@ -91,7 +99,6 @@ const Drawler = ({ children, title, menuList }) => {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
