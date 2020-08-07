@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 import { getCsv1, getCsv2, getLinks } from "../api/documents";
-
+import { useDebounce } from "../hooks/useDebounce";
 export const GlobalContext = createContext();
 
 const GlobalProvider = ({ children }) => {
@@ -8,15 +8,21 @@ const GlobalProvider = ({ children }) => {
   const [csv1, setCsv1] = useState([]);
   const [csv2, setCsv2] = useState([]);
   const [search, setSearch] = useState("");
+  const debouncedSearchTerm = useDebounce(search, 500);
 
   useEffect(() => {
     getLinks().then((resp) => setMenuList([...resp]));
   }, []);
 
   useEffect(() => {
-    getCsv1(search).then((resp) => setCsv1([...resp]));
-    getCsv2(search).then((resp) => setCsv2([...resp]));
-  }, [search]);
+    if (debouncedSearchTerm && debouncedSearchTerm.length > 2) {
+      getCsv1(search).then((resp) => setCsv1([...resp]));
+      getCsv2(search).then((resp) => setCsv2([...resp]));
+    } else {
+      setCsv1([]);
+      setCsv2([]);
+    }
+  }, [search, debouncedSearchTerm]);
 
   // useEffect(() => {
   //   (async function () {
