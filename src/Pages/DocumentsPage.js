@@ -4,7 +4,7 @@ import SimpleTable from "../components/SimpleTable";
 import { GlobalContext } from "../context/GlobalProvider";
 import SearchInput from "../components/SearchInput";
 import TotalDocuments from "../components/TotalDocuments";
-import SubTitle from "../components/SubTitle/SubTitle";
+import SubTitle from "../components/SubTitle";
 
 const DocumentsPage = ({ location }) => {
   const { csv1, csv2, setSearch } = useContext(GlobalContext);
